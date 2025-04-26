@@ -1,8 +1,8 @@
-
 import React from 'react';
 import MainLayout from '../components/layouts/MainLayout';
 import PlaylistCard from '../components/cards/PlaylistCard';
 import { Headphones, Disc } from 'lucide-react';
+import { useAudio } from '@/contexts/AudioContext';
 
 const featuredPlaylists = [
   {
@@ -56,6 +56,13 @@ const trendingSongs = [
 ];
 
 const HomePage = () => {
+  const { setCurrentTrack, setIsPlaying } = useAudio();
+
+  const handleSongClick = (song: typeof trendingSongs[0]) => {
+    setCurrentTrack(song);
+    setIsPlaying(true);
+  };
+
   return (
     <MainLayout>
       <div className="animate-fade-in">
@@ -96,6 +103,7 @@ const HomePage = () => {
               <div 
                 key={song.id} 
                 className="flex items-center p-4 hover:bg-famify-purple/10 cursor-pointer transition-colors border-b border-famify-gray-medium last:border-0"
+                onClick={() => handleSongClick(song)}
               >
                 <div className="w-8 text-center text-muted-foreground mr-4">{index + 1}</div>
                 <img 

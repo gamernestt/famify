@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AudioProvider } from "./contexts/AudioContext";
 import AuthGuard from "./components/auth/AuthGuard";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
@@ -17,39 +18,41 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/logout" element={<LogoutPage />} />
-          <Route 
-            path="/" 
-            element={
-              <AuthGuard>
-                <HomePage />
-              </AuthGuard>
-            } 
-          />
-          <Route 
-            path="/search" 
-            element={
-              <AuthGuard>
-                <SearchPage />
-              </AuthGuard>
-            } 
-          />
-          <Route 
-            path="/profile" 
-            element={
-              <AuthGuard>
-                <ProfilePage />
-              </AuthGuard>
-            } 
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AudioProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/logout" element={<LogoutPage />} />
+            <Route 
+              path="/" 
+              element={
+                <AuthGuard>
+                  <HomePage />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/search" 
+              element={
+                <AuthGuard>
+                  <SearchPage />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <AuthGuard>
+                  <ProfilePage />
+                </AuthGuard>
+              } 
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AudioProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

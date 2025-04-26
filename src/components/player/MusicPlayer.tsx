@@ -1,27 +1,34 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, List } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { useAudio } from '@/contexts/AudioContext';
 
 const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, currentTrack, volume, setIsPlaying, setVolume } = useAudio();
   
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
+
+  const handleVolumeChange = (value: number[]) => {
+    setVolume(value[0]);
+  };
+
+  if (!currentTrack) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-[#111111] to-famify-gray-dark border-t border-famify-purple/20 p-3 md:p-4 z-10 hidden md:block neon-border border-l-0 border-r-0 border-b-0 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 w-1/4">
           <img 
-            src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=150&fit=crop" 
+            src={currentTrack.imageUrl}
             alt="Album cover" 
             className="h-14 w-14 rounded-md object-cover shadow-lg"
           />
           <div className="overflow-hidden">
-            <h4 className="font-medium text-sm truncate">Currently Playing Track</h4>
-            <p className="text-xs text-muted-foreground truncate">Artist Name - Album Name</p>
+            <h4 className="font-medium text-sm truncate">{currentTrack.title}</h4>
+            <p className="text-xs text-muted-foreground truncate">{currentTrack.artist}</p>
           </div>
         </div>
 
@@ -52,7 +59,7 @@ const MusicPlayer = () => {
                 <div className="h-1 bg-famify-purple rounded-full" style={{ width: '33%' }}></div>
               </div>
             </div>
-            <span className="text-xs text-muted-foreground">3:45</span>
+            <span className="text-xs text-muted-foreground">{currentTrack.duration}</span>
           </div>
         </div>
 
@@ -61,9 +68,15 @@ const MusicPlayer = () => {
           <div className="flex items-center gap-2">
             <Volume2 size={18} className="text-muted-foreground" />
             <div className="relative w-28 h-1 group">
-              <Slider defaultValue={[80]} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+              <Slider 
+                defaultValue={[volume]} 
+                max={100}
+                step={1}
+                onValueChange={handleVolumeChange}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" 
+              />
               <div className="h-1 bg-famify-gray-medium rounded-full w-full">
-                <div className="h-1 bg-famify-purple rounded-full" style={{ width: '80%' }}></div>
+                <div className="h-1 bg-famify-purple rounded-full" style={{ width: `${volume}%` }}></div>
               </div>
             </div>
           </div>
