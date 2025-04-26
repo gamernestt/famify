@@ -5,7 +5,19 @@ import { Slider } from '@/components/ui/slider';
 import { useAudio } from '@/contexts/AudioContext';
 
 const MusicPlayer = () => {
-  const { isPlaying, currentTrack, volume, setIsPlaying, setVolume } = useAudio();
+  const { 
+    isPlaying, 
+    currentTrack, 
+    volume, 
+    currentTime,
+    duration,
+    playbackProgress,
+    setIsPlaying, 
+    setVolume,
+    seekTo,
+    playNextTrack,
+    playPreviousTrack
+  } = useAudio();
   
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -13,6 +25,18 @@ const MusicPlayer = () => {
 
   const handleVolumeChange = (value: number[]) => {
     setVolume(value[0]);
+  };
+
+  const handleSeek = (value: number[]) => {
+    const newPosition = (value[0] / 100) * (duration || 0);
+    seekTo(newPosition);
+  };
+
+  // Format time in MM:SS
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   };
 
   if (!currentTrack) return null;
@@ -34,7 +58,10 @@ const MusicPlayer = () => {
 
         <div className="flex flex-col items-center w-2/4">
           <div className="flex items-center gap-4 mb-2">
-            <button className="text-muted-foreground hover:text-white transition-colors">
+            <button 
+              className="text-muted-foreground hover:text-white transition-colors"
+              onClick={playPreviousTrack}
+            >
               <SkipBack size={20} />
             </button>
             <button 
@@ -43,20 +70,27 @@ const MusicPlayer = () => {
             >
               {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
             </button>
-            <button className="text-muted-foreground hover:text-white transition-colors">
+            <button 
+              className="text-muted-foreground hover:text-white transition-colors"
+              onClick={playNextTrack}
+            >
               <SkipForward size={20} />
             </button>
           </div>
           
           <div className="flex items-center gap-2 w-full max-w-md">
-            <span className="text-xs text-muted-foreground">0:00</span>
+            <span className="text-xs text-muted-foreground">{formatTime(currentTime)}</span>
             <div className="relative w-full h-1 group">
               <Slider 
-                defaultValue={[33]} 
+                value={[playbackProgress]} 
+                onValueChange={handleSeek}
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" 
               />
               <div className="h-1 bg-famify-gray-medium rounded-full w-full">
-                <div className="h-1 bg-famify-purple rounded-full" style={{ width: '33%' }}></div>
+                <div 
+                  className="h-1 bg-famify-purple rounded-full" 
+                  style={{ width: `${playbackProgress}%` }}
+                ></div>
               </div>
             </div>
             <span className="text-xs text-muted-foreground">{currentTrack.duration}</span>
@@ -69,14 +103,17 @@ const MusicPlayer = () => {
             <Volume2 size={18} className="text-muted-foreground" />
             <div className="relative w-28 h-1 group">
               <Slider 
-                defaultValue={[volume]} 
+                value={[volume]} 
                 max={100}
                 step={1}
                 onValueChange={handleVolumeChange}
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" 
               />
               <div className="h-1 bg-famify-gray-medium rounded-full w-full">
-                <div className="h-1 bg-famify-purple rounded-full" style={{ width: `${volume}%` }}></div>
+                <div 
+                  className="h-1 bg-famify-purple rounded-full" 
+                  style={{ width: `${volume}%` }}
+                ></div>
               </div>
             </div>
           </div>
