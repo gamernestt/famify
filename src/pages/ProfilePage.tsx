@@ -33,11 +33,14 @@ const ProfilePage = () => {
   return (
     <MainLayout>
       <div className="animate-fade-in">
-        <h1 className="text-3xl md:text-4xl font-bold mb-6 famify-gradient-text">Profile</h1>
+        <div className="bg-gradient-to-r from-famify-purple/20 to-transparent py-6 -mx-8 px-8 mb-8 rounded-b-3xl">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 neon-text">Your Profile</h1>
+          <p className="text-muted-foreground">Manage your personal settings</p>
+        </div>
         
-        <div className="mb-10 bg-famify-gray-dark p-6 rounded-lg">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-28 h-28 rounded-full bg-famify-gray-medium flex items-center justify-center border-2 border-famify-purple">
+        <div className="mb-10 glass-card p-8 rounded-xl neon-border">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-famify-gray-medium to-famify-gray-dark flex items-center justify-center border-2 border-famify-purple glow-animation">
               {user.profilePicture ? (
                 <img 
                   src={user.profilePicture}
@@ -45,24 +48,24 @@ const ProfilePage = () => {
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <User size={48} className="text-muted-foreground" />
+                <User size={64} className="text-famify-purple/80" />
               )}
             </div>
             
             <div className="flex-1">
-              <label className="block text-sm text-muted-foreground mb-1">Your Name</label>
+              <label className="block text-sm text-famify-purple mb-2 font-medium">Your Name</label>
               <input
                 type="text"
-                className="w-full bg-famify-gray-medium p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-famify-purple"
+                className="w-full bg-famify-gray-dark/70 backdrop-blur-sm p-3 rounded-lg border border-famify-purple/30 mb-5 focus:outline-none focus:ring-2 focus:ring-famify-purple"
                 value={user.name}
                 onChange={handleNameChange}
               />
               
-              <div className="flex gap-4">
-                <Button className="bg-famify-purple hover:bg-famify-purple-dark text-white">
+              <div className="flex flex-wrap gap-4">
+                <Button className="neon-button">
                   Update Profile
                 </Button>
-                <Button variant="outline" className="border-famify-purple text-famify-purple hover:bg-famify-purple hover:bg-opacity-10">
+                <Button variant="outline" className="border-famify-purple text-famify-purple hover:bg-famify-purple/10 hover:text-white">
                   Upload Picture
                 </Button>
               </div>
@@ -71,9 +74,15 @@ const ProfilePage = () => {
         </div>
         
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Your Playlists</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Your Playlists</h2>
+            <Button className="bg-famify-purple/20 hover:bg-famify-purple/30 text-famify-purple text-sm rounded-full px-4">
+              Create New
+            </Button>
+          </div>
+          
           {userPlaylists.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
               {userPlaylists.map((playlist) => (
                 <PlaylistCard
                   key={playlist.id}
@@ -84,9 +93,9 @@ const ProfilePage = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-famify-gray-dark rounded-lg">
-              <p className="text-muted-foreground">You don't have any playlists yet.</p>
-              <Button className="mt-4 bg-famify-purple hover:bg-famify-purple-dark">
+            <div className="text-center py-16 glass-card rounded-xl neon-border">
+              <p className="text-muted-foreground mb-3">You don't have any playlists yet.</p>
+              <Button className="neon-button">
                 Create Playlist
               </Button>
             </div>

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, List } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 
 const MusicPlayer = () => {
@@ -11,46 +11,62 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-famify-gray-dark to-famify-gray-medium border-t border-famify-gray-medium p-2 md:p-4 z-10 hidden md:block">
+    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-[#111111] to-famify-gray-dark border-t border-famify-purple/20 p-3 md:p-4 z-10 hidden md:block neon-border border-l-0 border-r-0 border-b-0 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 w-1/4">
           <img 
             src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=150&fit=crop" 
             alt="Album cover" 
-            className="h-12 w-12 rounded-md object-cover"
+            className="h-14 w-14 rounded-md object-cover shadow-lg"
           />
-          <div>
-            <h4 className="font-medium text-sm">Currently Playing</h4>
-            <p className="text-xs text-muted-foreground">Artist Name</p>
+          <div className="overflow-hidden">
+            <h4 className="font-medium text-sm truncate">Currently Playing Track</h4>
+            <p className="text-xs text-muted-foreground truncate">Artist Name - Album Name</p>
           </div>
         </div>
 
         <div className="flex flex-col items-center w-2/4">
           <div className="flex items-center gap-4 mb-2">
-            <button className="text-muted-foreground hover:text-white">
+            <button className="text-muted-foreground hover:text-white transition-colors">
               <SkipBack size={20} />
             </button>
             <button 
-              className="player-control" 
+              className="bg-famify-purple hover:bg-famify-purple-light text-white rounded-full h-10 w-10 flex items-center justify-center transition-transform hover:scale-110 shadow-[0_0_10px_rgba(155,135,245,0.4)]" 
               onClick={togglePlay}
             >
               {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
             </button>
-            <button className="text-muted-foreground hover:text-white">
+            <button className="text-muted-foreground hover:text-white transition-colors">
               <SkipForward size={20} />
             </button>
           </div>
           
           <div className="flex items-center gap-2 w-full max-w-md">
             <span className="text-xs text-muted-foreground">0:00</span>
-            <Slider defaultValue={[33]} className="w-full" />
+            <div className="relative w-full h-1 group">
+              <Slider 
+                defaultValue={[33]} 
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" 
+              />
+              <div className="h-1 bg-famify-gray-medium rounded-full w-full">
+                <div className="h-1 bg-famify-purple rounded-full" style={{ width: '33%' }}></div>
+              </div>
+            </div>
             <span className="text-xs text-muted-foreground">3:45</span>
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 w-1/4 justify-end">
-          <Volume2 size={18} className="text-muted-foreground" />
-          <Slider defaultValue={[80]} className="w-28" />
+        <div className="hidden lg:flex items-center gap-4 w-1/4 justify-end">
+          <List size={18} className="text-muted-foreground cursor-pointer hover:text-famify-purple transition-colors" />
+          <div className="flex items-center gap-2">
+            <Volume2 size={18} className="text-muted-foreground" />
+            <div className="relative w-28 h-1 group">
+              <Slider defaultValue={[80]} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+              <div className="h-1 bg-famify-gray-medium rounded-full w-full">
+                <div className="h-1 bg-famify-purple rounded-full" style={{ width: '80%' }}></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
