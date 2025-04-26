@@ -16,7 +16,7 @@ const userPlaylists = [
     id: 2,
     title: 'Recently Played',
     imageUrl: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=300&fit=crop',
-    description: 'Music you've been listening to lately'
+    description: "Music you've been listening to lately"
   }
 ];
 
